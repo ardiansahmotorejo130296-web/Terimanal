@@ -644,30 +644,40 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
                         if (username.isEmpty() || host.isEmpty()) {
                             addOutput("ssh: invalid target '$target'. Username and host cannot be empty.", OutputType.STDERR)
                         } else {
-                            var privateKeyContent = ""
-                            var keyLoadedSuccessfully = true
-                            if (keyPath != null) {
-                                val file = if (keyPath.startsWith("/")) {
-                                    java.io.File(keyPath)
-                                } else {
-                                    java.io.File(_currentDirectoryPath.value, keyPath)
-                                }
-                                if (file.exists() && file.isFile) {
-                                    try {
-                                        privateKeyContent = file.readText()
-                                        addOutput("ssh: Loaded private key from ${file.name}", OutputType.INFO)
-                                    } catch (e: Exception) {
-                                        addOutput("ssh: Failed to read key file: ${e.localizedMessage}", OutputType.STDERR)
+                            viewModelScope.launch(Dispatchers.IO) {
+                                var privateKeyContent = ""
+                                var keyLoadedSuccessfully = true
+                                if (keyPath != null) {
+                                    val file = if (keyPath.startsWith("/")) {
+                                        java.io.File(keyPath)
+                                    } else {
+                                        java.io.File(_currentDirectoryPath.value, keyPath)
+                                    }
+                                    if (file.exists() && file.isFile) {
+                                        try {
+                                            privateKeyContent = file.readText()
+                                            withContext(Dispatchers.Main) {
+                                                addOutput("ssh: Loaded private key from ${file.name}", OutputType.INFO)
+                                            }
+                                        } catch (e: Exception) {
+                                            withContext(Dispatchers.Main) {
+                                                addOutput("ssh: Failed to read key file: ${e.localizedMessage}", OutputType.STDERR)
+                                            }
+                                            keyLoadedSuccessfully = false
+                                        }
+                                    } else {
+                                        withContext(Dispatchers.Main) {
+                                            addOutput("ssh: Key file not found: $keyPath", OutputType.STDERR)
+                                        }
                                         keyLoadedSuccessfully = false
                                     }
-                                } else {
-                                    addOutput("ssh: Key file not found: $keyPath", OutputType.STDERR)
-                                    keyLoadedSuccessfully = false
                                 }
-                            }
 
-                            if (keyLoadedSuccessfully) {
-                                connectSsh(host, username, portStr, passwordVal, privateKeyContent)
+                                if (keyLoadedSuccessfully) {
+                                    withContext(Dispatchers.Main) {
+                                        connectSsh(host, username, portStr, passwordVal, privateKeyContent)
+                                    }
+                                }
                             }
                         }
                     }
