@@ -1,24 +1,24 @@
 const characters = [
-  { name: 'Naruto', emoji: '🦊', color: '#ff9900' },
-  { name: 'Sasuke', emoji: '⚡', color: '#3333cc' },
-  { name: 'Sakura', emoji: '🌸', color: '#ff99cc' },
-  { name: 'Kakashi', emoji: '📖', color: '#999999' },
-  { name: 'Boruto', emoji: '🌀', color: '#ffcc00' },
-  { name: 'Sarada', emoji: '👓', color: '#cc0000' },
-  { name: 'Mitsuki', emoji: '🐍', color: '#66ccff' },
-  { name: 'Konohamaru', emoji: '🧣', color: '#339933' },
-  { name: 'Shikamaru', emoji: '☁️', color: '#666666' },
-  { name: 'Hinata', emoji: '👁️', color: '#cc99ff' },
-  { name: 'Gaara', emoji: '⏳', color: '#993333' },
-  { name: 'Itachi', emoji: '🦅', color: '#000000' },
-  { name: 'Jiraiya', emoji: '🐸', color: '#ff3300' },
-  { name: 'Tsunade', emoji: '🐌', color: '#009933' },
-  { name: 'Orochimaru', emoji: '🐍', color: '#660066' },
-  { name: 'Minato', emoji: '⚡', color: '#ffff33' },
-  { name: 'Kawaki', emoji: '♦️', color: '#000033' },
-  { name: 'Jigen', emoji: '⬛', color: '#111111' },
-  { name: 'Momoshiki', emoji: '👁️‍🗨️', color: '#ffffff' },
-  { name: 'Isshiki', emoji: '👁️‍🗨️', color: '#eeeeee' }
+  { name: 'Naruto', emoji: '🦊', color: '#ff9900', skill: { name: 'Rasengan', damage: 30 } },
+  { name: 'Sasuke', emoji: '⚡', color: '#3333cc', skill: { name: 'Chidori', damage: 30 } },
+  { name: 'Sakura', emoji: '🌸', color: '#ff99cc', skill: { name: 'Cherry Blossom Clash', damage: 25 } },
+  { name: 'Kakashi', emoji: '📖', color: '#999999', skill: { name: 'Raikiri', damage: 35 } },
+  { name: 'Boruto', emoji: '🌀', color: '#ffcc00', skill: { name: 'Vanishing Rasengan', damage: 28 } },
+  { name: 'Sarada', emoji: '👓', color: '#cc0000', skill: { name: 'Sharingan Strike', damage: 25 } },
+  { name: 'Mitsuki', emoji: '🐍', color: '#66ccff', skill: { name: 'Snake Lightning', damage: 25 } },
+  { name: 'Konohamaru', emoji: '🧣', color: '#339933', skill: { name: 'Burning Ash', damage: 20 } },
+  { name: 'Shikamaru', emoji: '☁️', color: '#666666', skill: { name: 'Shadow Possession', damage: 20 } },
+  { name: 'Hinata', emoji: '👁️', color: '#cc99ff', skill: { name: 'Gentle Step', damage: 20 } },
+  { name: 'Gaara', emoji: '⏳', color: '#993333', skill: { name: 'Sand Coffin', damage: 28 } },
+  { name: 'Itachi', emoji: '🦅', color: '#000000', skill: { name: 'Amaterasu', damage: 40 } },
+  { name: 'Jiraiya', emoji: '🐸', color: '#ff3300', skill: { name: 'Toad Oil Fireball', damage: 35 } },
+  { name: 'Tsunade', emoji: '🐌', color: '#009933', skill: { name: '100 Healings Strike', damage: 35 } },
+  { name: 'Orochimaru', emoji: '🐍', color: '#660066', skill: { name: 'Striking Shadow Snake', damage: 30 } },
+  { name: 'Minato', emoji: '⚡', color: '#ffff33', skill: { name: 'Flying Raijin', damage: 35 } },
+  { name: 'Kawaki', emoji: '♦️', color: '#000033', skill: { name: 'Karma Blast', damage: 35 } },
+  { name: 'Jigen', emoji: '⬛', color: '#111111', skill: { name: 'Black Rods', damage: 40 } },
+  { name: 'Momoshiki', emoji: '👁️‍🗨️', color: '#ffffff', skill: { name: 'Takami Musubinokami', damage: 45 } },
+  { name: 'Isshiki', emoji: '👁️‍🗨️', color: '#eeeeee', skill: { name: 'Sukunahikona', damage: 50 } }
 ];
 
 function initGame() {
@@ -86,6 +86,9 @@ function startGame() {
 
   let gameState = 'playing'; // 'playing', 'win', 'lose'
 
+  let activeSkillText = '';
+  let activeSkillTimer = 0;
+
   const playerSprite = {
     x: canvas.width / 4,
     y: canvas.height - 250,
@@ -98,6 +101,13 @@ function startGame() {
     y: canvas.height - 250,
     width: 100,
     height: 100
+  };
+
+  const inviteBtn = {
+    x: canvas.width / 2 - 100,
+    y: canvas.height - 150,
+    w: 200,
+    h: 50
   };
 
   function drawHealthBar(x, y, health, maxHealth, name) {
@@ -130,6 +140,24 @@ function startGame() {
     ctx.fillText(charData.emoji, sprite.x, sprite.y);
   }
 
+  function shareGame() {
+    if (typeof FBInstant !== 'undefined' && FBInstant.shareAsync) {
+      FBInstant.shareAsync({
+        intent: 'INVITE',
+        image: '', // Base64 image could be added here
+        text: 'Come battle with me in Boruto Battle!',
+        data: { myReplayData: '...' },
+      }).then(function() {
+        console.log("Shared successfully!");
+      }).catch(function(err) {
+        console.log("Share failed or not supported in local env", err);
+      });
+    } else {
+      console.log("Invite friends clicked (FBInstant not available)");
+      alert("Invite Friends triggered! (Works in Facebook app)");
+    }
+  }
+
   function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -153,11 +181,34 @@ function startGame() {
 
       ctx.fillStyle = '#ffcc00';
       ctx.font = '24px Arial';
-      ctx.fillText('Tap Screen to Attack!', canvas.width / 2, canvas.height - 80);
+      ctx.fillText('Tap Screen to Attack!', canvas.width / 2, canvas.height - 50);
+
+      // Draw invite button
+      ctx.fillStyle = '#4267B2';
+      ctx.fillRect(inviteBtn.x, inviteBtn.y, inviteBtn.w, inviteBtn.h);
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 20px Arial';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('Invite Friends', canvas.width / 2, inviteBtn.y + inviteBtn.h / 2);
+
+      // Draw active skill text
+      if (activeSkillTimer > 0) {
+        ctx.fillStyle = '#00ffff';
+        ctx.font = 'bold 36px Arial';
+        ctx.fillText(activeSkillText, canvas.width / 2, canvas.height / 2);
+        activeSkillTimer--;
+      }
 
       // AI attack logic
-      if (Math.random() < 0.03) {
-        playerHealth -= 5;
+      if (Math.random() < 0.02) { // slower AI so player has chance
+        if (Math.random() < 0.2) { // 20% chance to use skill
+           playerHealth -= enemyChar.skill.damage;
+           activeSkillText = enemyChar.name + " uses " + enemyChar.skill.name + "!";
+           activeSkillTimer = 60;
+        } else {
+           playerHealth -= 5;
+        }
+
         if (playerHealth <= 0) gameState = 'lose';
       }
 
@@ -184,8 +235,22 @@ function startGame() {
 
   function handleInput(x, y) {
     if (gameState === 'playing') {
+      // Check if Invite button was clicked
+      if (x >= inviteBtn.x && x <= inviteBtn.x + inviteBtn.w &&
+          y >= inviteBtn.y && y <= inviteBtn.y + inviteBtn.h) {
+          shareGame();
+          return;
+      }
+
       // Player attacks
-      enemyHealth -= 15;
+      if (Math.random() < 0.3) { // 30% chance to use skill
+         enemyHealth -= playerChar.skill.damage;
+         activeSkillText = playerChar.name + " uses " + playerChar.skill.name + "!";
+         activeSkillTimer = 60;
+      } else {
+         enemyHealth -= 15;
+      }
+
       if (enemyHealth <= 0) {
         gameState = 'win';
       }
@@ -196,6 +261,7 @@ function startGame() {
       playerHealth = 100;
       enemyHealth = 100;
       gameState = 'playing';
+      activeSkillTimer = 0;
     }
   }
 
