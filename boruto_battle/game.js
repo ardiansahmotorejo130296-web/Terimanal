@@ -88,6 +88,8 @@ window.addEventListener('load', initGame);
 
 function startGame() {
   const canvas = document.getElementById('gameCanvas');
+  const bgImg = new Image();
+  bgImg.src = "assets/background.png";
   const ctx = canvas.getContext('2d');
 
   let charWidth = 60;
@@ -120,11 +122,26 @@ function startGame() {
   let enemyShake = 0;
   let floatingTexts = [];
 
+  let particles = [];
+
   const playerSprite = { x: canvas.width / 4, y: canvas.height - 250, width: 100, height: 100 };
   const enemySprite = { x: (canvas.width / 4) * 3, y: canvas.height - 250, width: 100, height: 100 };
 
   const inviteBtn = { x: canvas.width / 2 - 100, y: canvas.height - 150, w: 200, h: 50 };
 
+  function createParticles(x, y, color) {
+    for (let i = 0; i < 15; i++) {
+      particles.push({
+        x: x,
+        y: y,
+        vx: (Math.random() - 0.5) * 10,
+        vy: (Math.random() - 0.5) * 10,
+        life: 20 + Math.random() * 20,
+        color: color,
+        size: 2 + Math.random() * 4
+      });
+    }
+  }
   function addFloatingText(x, y, text, color) {
     floatingTexts.push({ x, y, text, color, life: 40 });
   }
@@ -177,8 +194,12 @@ function startGame() {
 
   function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#1a1a2e';
+    if (bgImg.complete && bgImg.naturalHeight !== 0) {
+      ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+    } else {
+      ctx.fillStyle = '#1a1a2e';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 
     ctx.fillStyle = 'white';
     ctx.font = 'bold 36px Arial';
@@ -231,6 +252,17 @@ function startGame() {
         activeSkillTimer--;
       }
 
+      for (let i = particles.length - 1; i >= 0; i--) {
+        let p = particles[i];
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life--;
+        if (p.life <= 0) particles.splice(i, 1);
+      }
       for(let i = floatingTexts.length - 1; i >= 0; i--) {
          let ft = floatingTexts[i];
          ctx.fillStyle = ft.color;
@@ -255,6 +287,7 @@ function startGame() {
         playerHealth -= dmg;
         playerShake = isSkill ? 20 : 10;
         addFloatingText(playerSprite.x, playerSprite.y - 50, "-" + dmg, "red");
+        createParticles(playerSprite.x, playerSprite.y, "red");
         if (playerHealth <= 0) gameState = 'lose';
       }
 
@@ -287,6 +320,8 @@ function startGame() {
             playerShake = 0;
             enemyShake = 0;
             floatingTexts = [];
+            particles = [];
+
             activeSkillTimer = 0;
             gameState = 'playing';
             return;
@@ -310,6 +345,7 @@ function startGame() {
       enemyHealth -= dmg;
       enemyShake = isSkill ? 20 : 10;
       addFloatingText(enemySprite.x, enemySprite.y - 50, "-" + dmg, "yellow");
+      createParticles(enemySprite.x, enemySprite.y, "yellow");
 
       if (enemyHealth <= 0) {
         gameState = 'win';
