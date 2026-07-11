@@ -1,0 +1,3 @@
+## 2023-11-20 - Dynamic ARIA Labels for State-Toggling Icons
+**Learning:** Icon-only buttons that toggle state (like showing/hiding a password) need dynamic accessibility labels. Using `contentDescription = null` makes it an "unlabelled button" to screen readers, causing a barrier.
+**Action:** When implementing a toggle button, ensure `contentDescription` changes dynamically based on the state (e.g., `if (showPassword) "Hide password" else "Show password"`) instead of leaving it null.

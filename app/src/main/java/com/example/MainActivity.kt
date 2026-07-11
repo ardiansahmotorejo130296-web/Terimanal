@@ -639,7 +639,7 @@ fun TerminalScreen(
                             IconButton(onClick = { showPassword = !showPassword }) {
                                 Icon(
                                     imageVector = if (showPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                    contentDescription = null
+                                    contentDescription = if (showPassword) "Hide password" else "Show password"
                                 )
                             }
                         },
