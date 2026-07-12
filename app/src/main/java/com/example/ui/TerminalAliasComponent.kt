@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -68,7 +69,7 @@ fun TerminalAliasComponent(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Label,
-                        contentDescription = null,
+                        contentDescription = "Alias Manager Icon",
                         tint = currentTheme.promptColor,
                         modifier = Modifier.size(16.dp)
                     )
@@ -88,7 +89,10 @@ fun TerminalAliasComponent(
                     fontWeight = FontWeight.Bold,
                     color = currentTheme.errorColor,
                     modifier = Modifier
-                        .clickable { onClose() }
+                        .clickable(
+                            role = Role.Button,
+                            onClickLabel = "Close Alias Manager"
+                        ) { onClose() }
                         .padding(horizontal = 4.dp)
                         .testTag("alias_manager_close_button")
                 )
@@ -281,7 +285,10 @@ fun TerminalAliasComponent(
                                 tint = currentTheme.errorColor.copy(alpha = 0.8f),
                                 modifier = Modifier
                                     .size(16.dp)
-                                    .clickable { onDeleteAlias(item.alias) }
+                                    .clickable(
+                                        role = Role.Button,
+                                        onClickLabel = "Delete Alias"
+                                    ) { onDeleteAlias(item.alias) }
                                     .testTag("delete_alias_${item.alias}")
                             )
                         }

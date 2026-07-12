@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -63,7 +64,7 @@ fun TerminalThemeSwitcherComponent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Palette,
-                        contentDescription = null,
+                        contentDescription = "Theme Selector Icon",
                         tint = currentTheme.promptColor,
                         modifier = Modifier.size(16.dp)
                     )
@@ -83,7 +84,10 @@ fun TerminalThemeSwitcherComponent(
                     fontWeight = FontWeight.Bold,
                     color = currentTheme.errorColor,
                     modifier = Modifier
-                        .clickable { onClose() }
+                        .clickable(
+                            role = Role.Button,
+                            onClickLabel = "Close Theme Selector"
+                        ) { onClose() }
                         .padding(horizontal = 4.dp)
                         .testTag("theme_switcher_close_button")
                 )
@@ -124,7 +128,10 @@ fun TerminalThemeSwitcherComponent(
                                 color = if (isSelected) currentTheme.promptColor else currentTheme.foreground.copy(alpha = 0.2f),
                                 shape = RoundedCornerShape(6.dp)
                             )
-                            .clickable { onThemeSelected(t) }
+                            .clickable(
+                                role = Role.Button,
+                                onClickLabel = "Select Theme ${t.themeName}"
+                            ) { onThemeSelected(t) }
                             .padding(8.dp)
                             .testTag("theme_card_${t.id}")
                     ) {
