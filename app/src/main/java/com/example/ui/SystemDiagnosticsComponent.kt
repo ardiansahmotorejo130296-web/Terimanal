@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -59,7 +60,7 @@ fun SystemDiagnosticsComponent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.MonitorHeart,
-                        contentDescription = null,
+                        contentDescription = "System Diagnostics Icon",
                         tint = theme.successColor,
                         modifier = Modifier.size(16.dp)
                     )
@@ -112,7 +113,10 @@ fun SystemDiagnosticsComponent(
                         fontWeight = FontWeight.Bold,
                         color = theme.errorColor,
                         modifier = Modifier
-                            .clickable { onClose() }
+                            .clickable(
+                                role = Role.Button,
+                                onClickLabel = "Close Diagnostics"
+                            ) { onClose() }
                             .padding(horizontal = 4.dp)
                             .testTag("diagnostics_close_button")
                     )
