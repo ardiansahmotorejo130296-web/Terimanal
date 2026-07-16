@@ -83,7 +83,10 @@ fun TerminalThemeSwitcherComponent(
                     fontWeight = FontWeight.Bold,
                     color = currentTheme.errorColor,
                     modifier = Modifier
-                        .clickable { onClose() }
+                        .clickable(
+                            onClickLabel = "Close theme selector",
+                            role = androidx.compose.ui.semantics.Role.Button
+                        ) { onClose() }
                         .padding(horizontal = 4.dp)
                         .testTag("theme_switcher_close_button")
                 )
@@ -124,7 +127,10 @@ fun TerminalThemeSwitcherComponent(
                                 color = if (isSelected) currentTheme.promptColor else currentTheme.foreground.copy(alpha = 0.2f),
                                 shape = RoundedCornerShape(6.dp)
                             )
-                            .clickable { onThemeSelected(t) }
+                            .clickable(
+                                onClickLabel = "Select ${t.themeName} theme",
+                                role = androidx.compose.ui.semantics.Role.Button
+                            ) { onThemeSelected(t) }
                             .padding(8.dp)
                             .testTag("theme_card_${t.id}")
                     ) {
