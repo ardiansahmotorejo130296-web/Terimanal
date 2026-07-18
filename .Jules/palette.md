@@ -1,0 +1,3 @@
+## 2024-05-18 - Jetpack Compose Accessibility
+**Learning:** In Android Jetpack Compose, setting `contentDescription = null` on an `Icon` makes it invisible to screen readers (like TalkBack). Using `Modifier.clickable` without a `Role` and `onClickLabel` also degrades accessibility for screen reader users by not clearly identifying the interaction type or purpose.
+**Action:** When adding icons meant for interaction (e.g., inside an `IconButton`), always provide a meaningful `contentDescription`. When building custom clickable components using `Modifier.clickable`, explicitly provide `role = Role.Button` and `onClickLabel` to ensure the component is properly announced as a button with its specific action.

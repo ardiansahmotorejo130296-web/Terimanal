@@ -45,6 +45,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -505,7 +507,10 @@ fun TerminalScreen(
                             ),
                             shape = RoundedCornerShape(6.dp),
                             modifier = Modifier
-                                .clickable { viewModel.executeCommand(cmd) }
+                                .clickable(
+                                    role = Role.Button,
+                                    onClickLabel = "Execute Suggestion"
+                                ) { viewModel.executeCommand(cmd) }
                                 .border(
                                     width = 1.dp,
                                     color = theme.foreground.copy(alpha = 0.2f),
@@ -557,7 +562,7 @@ fun TerminalScreen(
             onDismissRequest = { showSshDialog = false },
             title = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Cloud, contentDescription = null, tint = theme.promptColor)
+                    Icon(Icons.Default.Cloud, contentDescription = "SSH Connect Icon", tint = theme.promptColor)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         "SSH Quick Connect",
@@ -639,7 +644,7 @@ fun TerminalScreen(
                             IconButton(onClick = { showPassword = !showPassword }) {
                                 Icon(
                                     imageVector = if (showPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                    contentDescription = null
+                                    contentDescription = "Toggle Password Visibility"
                                 )
                             }
                         },
@@ -694,7 +699,7 @@ fun TerminalScreen(
             onDismissRequest = { showSessionsDialog = false },
             title = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Bookmarks, contentDescription = null, tint = theme.promptColor)
+                    Icon(Icons.Default.Bookmarks, contentDescription = "Sessions Manager Icon", tint = theme.promptColor)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         "Sessions Manager",
@@ -855,7 +860,7 @@ fun TerminalScreen(
             onDismissRequest = { showProcessDialog = false },
             title = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Dns, contentDescription = null, tint = theme.promptColor)
+                    Icon(Icons.Default.Dns, contentDescription = "Process Monitor Icon", tint = theme.promptColor)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         "Process Monitor (top)",
@@ -1027,7 +1032,11 @@ fun TerminalUtilityButton(
         ),
         shape = RoundedCornerShape(6.dp),
         modifier = modifier
-            .clickable(enabled = enabled) { onClick() }
+            .clickable(
+                enabled = enabled,
+                role = Role.Button,
+                onClickLabel = text
+            ) { onClick() }
             .border(
                 width = 1.dp,
                 color = if (enabled) borderColor else theme.foreground.copy(alpha = 0.05f),
@@ -1061,7 +1070,10 @@ fun TerminalUtilityIconButton(
         colors = CardDefaults.cardColors(containerColor = theme.foreground.copy(alpha = 0.08f)),
         shape = RoundedCornerShape(6.dp),
         modifier = modifier
-            .clickable { onClick() }
+            .clickable(
+                role = Role.Button,
+                onClickLabel = "Utility Button"
+            ) { onClick() }
             .border(1.dp, theme.foreground.copy(alpha = 0.2f), RoundedCornerShape(6.dp))
             .height(34.dp)
     ) {
@@ -1071,7 +1083,7 @@ fun TerminalUtilityIconButton(
         ) {
             Icon(
                 imageVector = icon,
-                contentDescription = null,
+                contentDescription = "Utility Button Icon",
                 tint = theme.foreground,
                 modifier = Modifier.size(18.dp)
             )
