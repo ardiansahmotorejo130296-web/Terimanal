@@ -1,0 +1,3 @@
+## 2024-07-21 - Accessible Jetpack Compose Clickables
+**Learning:** In Jetpack Compose, interactive elements using `Modifier.clickable` without a semantic role or label present severe accessibility barriers for screen reader users. The screen reader may not correctly announce them as interactive buttons or describe their function, particularly for icon-only buttons or custom list items.
+**Action:** Always include `role = Role.Button` and contextual `onClickLabel` properties in `Modifier.clickable()` when building interactive elements (e.g., custom chips, icon buttons, selectable list rows) to ensure proper screen reader support.
