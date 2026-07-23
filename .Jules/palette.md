@@ -1,0 +1,3 @@
+## 2024-05-18 - Missing Screen Reader Semantics on Custom Composables
+**Learning:** Found an accessibility issue pattern specific to this app's components regarding custom clickable UI elements. Standard `IconButton` or `Button` composables automatically provide semantics for screen readers, but custom components using `Modifier.clickable` do not. Missing `role = Role.Button` and `onClickLabel` inside `clickable` blocks causes poor screen reader support for Jetpack Compose apps, leaving users unable to determine an element's action.
+**Action:** When creating custom clickable UI elements with `Modifier.clickable`, explicitly define `role = Role.Button` and an informative `onClickLabel` to ensure the elements are properly announced by screen reading services.
