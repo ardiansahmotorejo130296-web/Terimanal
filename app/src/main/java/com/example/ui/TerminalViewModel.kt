@@ -500,18 +500,16 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
                 handleAptCommand(parts)
             }
             "subfinder" -> {
-                if (isPackageInstalled("subfinder")) {
+                requirePackage("subfinder") {
                     if (parts.size > 1) {
                         runSubfinderCommand(parts[1])
                     } else {
                         addOutput("Usage: subfinder [domain] (e.g. subfinder google.com)", OutputType.STDERR)
                     }
-                } else {
-                    addOutput("bash: subfinder: command not found (You can install it with 'apt install subfinder')", OutputType.STDERR)
                 }
             }
             "dnslookup" -> {
-                if (isPackageInstalled("dnslookup")) {
+                requirePackage("dnslookup") {
                     if (parts.size > 1) {
                         val host = parts[1]
                         val type = if (parts.size > 2) parts[2].uppercase() else "A"
@@ -520,23 +518,19 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
                         addOutput("Usage: dnslookup [domain] [record_type] (e.g. dnslookup google.com MX)", OutputType.STDERR)
                         addOutput("Supported types: A, AAAA, MX, TXT, NS, CNAME", OutputType.INFO)
                     }
-                } else {
-                    addOutput("bash: dnslookup: command not found (You can install it with 'apt install dnslookup')", OutputType.STDERR)
                 }
             }
             "whois" -> {
-                if (isPackageInstalled("whois")) {
+                requirePackage("whois") {
                     if (parts.size > 1) {
                         runWhoisCommand(parts[1])
                     } else {
                         addOutput("Usage: whois [domain] (e.g. whois google.com)", OutputType.STDERR)
                     }
-                } else {
-                    addOutput("bash: whois: command not found (You can install it with 'apt install whois')", OutputType.STDERR)
                 }
             }
             "netcat", "nc" -> {
-                if (isPackageInstalled("netcat")) {
+                requirePackage("netcat", cmdName = "nc") {
                     if (parts.size > 2) {
                         val host = parts[1]
                         val portStr = parts[2]
@@ -544,16 +538,12 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
                     } else {
                         addOutput("Usage: nc [host] [port] (e.g. nc example.com 80)", OutputType.STDERR)
                     }
-                } else {
-                    addOutput("bash: nc: command not found (You can install it with 'apt install netcat')", OutputType.STDERR)
                 }
             }
             "ipinfo" -> {
-                if (isPackageInstalled("ipinfo")) {
+                requirePackage("ipinfo") {
                     val ip = if (parts.size > 1) parts[1] else ""
                     runIpInfoCommand(ip)
-                } else {
-                    addOutput("bash: ipinfo: command not found (You can install it with 'apt install ipinfo')", OutputType.STDERR)
                 }
             }
             "joke" -> {
@@ -1719,6 +1709,14 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
 
     private fun isPackageInstalled(pkg: String): Boolean {
         return _installedPackages.value.contains(pkg)
+    }
+
+    private inline fun requirePackage(pkg: String, cmdName: String = pkg, action: () -> Unit) {
+        if (isPackageInstalled(pkg)) {
+            action()
+        } else {
+            addOutput("bash: $cmdName: command not found (You can install it with 'apt install $pkg')", OutputType.STDERR)
+        }
     }
 
     private fun handleAptCommand(parts: List<String>) {
