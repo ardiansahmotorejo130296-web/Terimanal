@@ -1686,16 +1686,19 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
             var totalMax = 0L
             var totalCur = 0L
             val cores = Runtime.getRuntime().availableProcessors()
+            val buf = ByteArray(32)
             for (i in 0 until cores) {
                 val maxFile = File("/sys/devices/system/cpu/cpu$i/cpufreq/cpuinfo_max_freq")
                 val curFile = File("/sys/devices/system/cpu/cpu$i/cpufreq/scaling_cur_freq")
-                if (maxFile.exists() && curFile.exists()) {
-                    val max = maxFile.readText().trim().toLongOrNull() ?: 0L
-                    val cur = curFile.readText().trim().toLongOrNull() ?: 0L
+                try {
+                    val max = readLongFast(maxFile, buf)
                     if (max > 0) {
+                        val cur = readLongFast(curFile, buf)
                         totalMax += max
                         totalCur += cur
                     }
+                } catch (e: Exception) {
+                    // Ignore if missing or unreadable
                 }
             }
             if (totalMax > 0) {
@@ -1709,6 +1712,23 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
         val coreCount = Runtime.getRuntime().availableProcessors()
         val loadEstimate = (activeThreads / (coreCount * 12.0)) * 100.0
         return@withContext loadEstimate.coerceIn(4.0, 96.0)
+    }
+
+    private fun readLongFast(file: File, buf: ByteArray): Long {
+        var result = 0L
+        file.inputStream().use {
+            val len = it.read(buf)
+            if (len <= 0) return 0L
+            for (i in 0 until len) {
+                val c = buf[i].toInt().toChar()
+                if (c in '0'..'9') {
+                    result = result * 10 + (c - '0')
+                } else {
+                    break
+                }
+            }
+        }
+        return result
     }
 
     private fun drawProgressBar(percentage: Double, size: Int): String {
