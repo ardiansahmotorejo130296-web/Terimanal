@@ -1264,7 +1264,7 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    private fun getCompactPath(fullPath: String): String {
+    internal fun getCompactPath(fullPath: String): String {
         val filesDir = getApplication<Application>().filesDir.absolutePath
         return if (fullPath == filesDir) {
             "~"
