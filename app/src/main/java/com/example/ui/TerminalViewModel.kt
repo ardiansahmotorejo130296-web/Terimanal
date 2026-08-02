@@ -737,18 +737,20 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
             }
             "touch" -> {
                 if (parts.size > 1) {
-                    val filename = parts[1]
-                    val file = File(_currentDirectoryPath.value, filename)
-                    try {
-                        val created = file.createNewFile()
-                        if (created) {
-                            addOutput("touch: created empty file '$filename'", OutputType.SUCCESS)
-                        } else {
-                            file.setLastModified(System.currentTimeMillis())
-                            addOutput("touch: updated timestamp for '$filename'", OutputType.INFO)
+                    viewModelScope.launch {
+                        val filename = parts[1]
+                        val file = File(_currentDirectoryPath.value, filename)
+                        try {
+                            val created = withContext(Dispatchers.IO) { file.createNewFile() }
+                            if (created) {
+                                addOutput("touch: created empty file '$filename'", OutputType.SUCCESS)
+                            } else {
+                                withContext(Dispatchers.IO) { file.setLastModified(System.currentTimeMillis()) }
+                                addOutput("touch: updated timestamp for '$filename'", OutputType.INFO)
+                            }
+                        } catch (e: Exception) {
+                            addOutput("touch: failed to touch '$filename': ${e.localizedMessage}", OutputType.STDERR)
                         }
-                    } catch (e: Exception) {
-                        addOutput("touch: failed to touch '$filename': ${e.localizedMessage}", OutputType.STDERR)
                     }
                 } else {
                     addOutput("Usage: touch [filename]", OutputType.STDERR)
