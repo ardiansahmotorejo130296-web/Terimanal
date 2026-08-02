@@ -871,25 +871,33 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
     }
 
     private fun listDirectoryContents() {
-        try {
-            val dir = File(_currentDirectoryPath.value)
-            val files = dir.listFiles()
-            if (files == null || files.isEmpty()) {
-                addOutput("(directory is empty)", OutputType.INFO)
-                return
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val dir = File(_currentDirectoryPath.value)
+                val files = dir.listFiles()
+                if (files == null || files.isEmpty()) {
+                    withContext(Dispatchers.Main) {
+                        addOutput("(directory is empty)", OutputType.INFO)
+                    }
+                    return@launch
+                }
+                // Sort folders first, then files
+                val sorted = files.sortedWith(compareBy({ !it.isDirectory }, { it.name.lowercase() }))
+                withContext(Dispatchers.Main) {
+                    addOutput(String.format("%-12s   %s", "Size", "Name"), OutputType.INFO)
+                    addOutput("--------------------------------------------", OutputType.INFO)
+                    sorted.forEach { file ->
+                        val sizeStr = if (file.isDirectory) "<DIR>" else "${file.length()} B"
+                        val name = if (file.isDirectory) "${file.name}/" else file.name
+                        val colorType = if (file.isDirectory) OutputType.SUCCESS else OutputType.STDOUT
+                        addOutput(String.format("%-12s   %s", sizeStr, name), colorType)
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    addOutput("ls: failed to list directory contents: ${e.localizedMessage}", OutputType.STDERR)
+                }
             }
-            // Sort folders first, then files
-            val sorted = files.sortedWith(compareBy({ !it.isDirectory }, { it.name.lowercase() }))
-            addOutput(String.format("%-12s   %s", "Size", "Name"), OutputType.INFO)
-            addOutput("--------------------------------------------", OutputType.INFO)
-            sorted.forEach { file ->
-                val sizeStr = if (file.isDirectory) "<DIR>" else "${file.length()} B"
-                val name = if (file.isDirectory) "${file.name}/" else file.name
-                val colorType = if (file.isDirectory) OutputType.SUCCESS else OutputType.STDOUT
-                addOutput(String.format("%-12s   %s", sizeStr, name), colorType)
-            }
-        } catch (e: Exception) {
-            addOutput("ls: failed to list directory contents: ${e.localizedMessage}", OutputType.STDERR)
         }
     }
 
