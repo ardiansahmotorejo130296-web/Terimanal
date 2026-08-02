@@ -912,24 +912,32 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
     }
 
     private fun nativeRm(targetName: String) {
-        try {
-            val target = File(_currentDirectoryPath.value, targetName)
-            if (!target.exists()) {
-                addOutput("rm: cannot remove '$targetName': No such file or directory", OutputType.STDERR)
-                return
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val target = File(_currentDirectoryPath.value, targetName)
+                if (!target.exists()) {
+                    withContext(Dispatchers.Main) {
+                        addOutput("rm: cannot remove '$targetName': No such file or directory", OutputType.STDERR)
+                    }
+                    return@launch
+                }
+                val deleted = if (target.isDirectory) {
+                    target.deleteRecursively()
+                } else {
+                    target.delete()
+                }
+                withContext(Dispatchers.Main) {
+                    if (deleted) {
+                        addOutput("Removed successfully: $targetName", OutputType.SUCCESS)
+                    } else {
+                        addOutput("rm: failed to remove '$targetName'", OutputType.STDERR)
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    addOutput("rm: error: ${e.localizedMessage}", OutputType.STDERR)
+                }
             }
-            val deleted = if (target.isDirectory) {
-                target.deleteRecursively()
-            } else {
-                target.delete()
-            }
-            if (deleted) {
-                addOutput("Removed successfully: $targetName", OutputType.SUCCESS)
-            } else {
-                addOutput("rm: failed to remove '$targetName'", OutputType.STDERR)
-            }
-        } catch (e: Exception) {
-            addOutput("rm: error: ${e.localizedMessage}", OutputType.STDERR)
         }
     }
 
