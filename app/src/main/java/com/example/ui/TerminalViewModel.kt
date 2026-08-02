@@ -1111,7 +1111,7 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
                 }
 
                 // Skip host key verification for easy connection
-                session.setConfig("StrictHostKeyChecking", "no")
+                session.setConfig("StrictHostKeyChecking", "ask")
                 session.connect(15000) // 15 seconds timeout
 
                 val channel = session.openChannel("shell") as ChannelShell
