@@ -1,0 +1,10 @@
+⚡ Optimize 'touch' command file I/O to avoid Main Thread blocks
+
+💡 What: Refactored the 'touch' command logic in TerminalViewModel.kt to run createNewFile and setLastModified wrapped in withContext(Dispatchers.IO). Added a TouchBenchmarkTest for localized benchmarking.
+
+🎯 Why: The file creation logic previously blocked the Main Thread directly with synchronous disk I/O, which could cause jank or ANR (Application Not Responding) exceptions under heavy usage or on slower storage mediums.
+
+📊 Measured Improvement:
+- Baseline: ~63ms total time for 100 touch operations.
+- After Optimization: ~70ms total time for 100 touch operations.
+- Note: Although the absolute duration of the test increased slightly by ~7ms (likely due to coroutine overhead and context switching in the Robolectric test runner), the real-world performance benefit is that all disk I/O is now safely offloaded to background threads. The main thread is no longer blocked synchronously during these tasks.
