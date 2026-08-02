@@ -150,6 +150,8 @@ data class TerminalProcess(
     @Transient val process: java.lang.Process? = null
 )
 
+private val WHITESPACE_REGEX = "\\s+".toRegex()
+
 class TerminalViewModel(application: Application) : AndroidViewModel(application) {
     private val database = TerminalDatabase.getDatabase(application)
     private val repository = TerminalRepository(database)
@@ -1640,7 +1642,7 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
                 val line1 = reader1.readLine()
                 reader1.close()
                 if (line1 != null && line1.startsWith("cpu ")) {
-                    val parts1 = line1.trim().split("\\s+".toRegex())
+                    val parts1 = line1.trim().split(WHITESPACE_REGEX)
                     val user1 = parts1[1].toLong()
                     val nice1 = parts1[2].toLong()
                     val system1 = parts1[3].toLong()
@@ -1658,7 +1660,7 @@ class TerminalViewModel(application: Application) : AndroidViewModel(application
                     val line2 = reader2.readLine()
                     reader2.close()
                     if (line2 != null && line2.startsWith("cpu ")) {
-                        val parts2 = line2.trim().split("\\s+".toRegex())
+                        val parts2 = line2.trim().split(WHITESPACE_REGEX)
                         val user2 = parts2[1].toLong()
                         val nice2 = parts2[2].toLong()
                         val system2 = parts2[3].toLong()
