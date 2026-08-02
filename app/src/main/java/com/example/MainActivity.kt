@@ -549,7 +549,7 @@ fun TerminalScreen(
         var hostInput by remember { mutableStateOf("test.rebex.net") }
         var portInput by remember { mutableStateOf("22") }
         var usernameInput by remember { mutableStateOf("demo") }
-        var passwordInput by remember { mutableStateOf("password") }
+        var passwordInput by remember { mutableStateOf("") }
         var privateKeyVal by remember { mutableStateOf("") }
         var showPassword by remember { mutableStateOf(false) }
 
