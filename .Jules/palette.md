@@ -1,0 +1,3 @@
+## 2024-03-01 - Jetpack Compose Accessibility for Custom Interactive Elements
+**Learning:** Discovered an accessibility issue pattern specific to Jetpack Compose components. When using `Modifier.clickable` on arbitrary composables (like `Text` or `Box`) instead of native `Button` or `IconButton` components, Android's accessibility services do not inherently recognize them as buttons. This prevents screen readers from announcing them properly to visually impaired users.
+**Action:** Always include `role = Role.Button` and a descriptive `onClickLabel` inside the `Modifier.clickable` block for any custom interactive elements to ensure proper semantic context is provided to accessibility services.
