@@ -269,14 +269,16 @@ fun TerminalInputComponent(
                             fontSize = 11.sp,
                             color = theme.promptColor
                         )
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = "Close",
-                            tint = theme.foreground.copy(alpha = 0.6f),
-                            modifier = Modifier
-                                .size(16.dp)
-                                .clickable { showHistoryDropdown = false }
-                        )
+                        IconButton(
+                            onClick = { showHistoryDropdown = false }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close history stack",
+                                tint = theme.foreground.copy(alpha = 0.6f),
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     if (historyStack.isEmpty()) {
@@ -307,11 +309,15 @@ fun TerminalInputComponent(
                                             if (historyIndex == actualIdx) theme.foreground.copy(alpha = 0.1f) else Color.Transparent,
                                             RoundedCornerShape(4.dp)
                                         )
-                                        .clickable {
-                                            historyIndex = actualIdx
-                                            onValueChange(command)
-                                            showHistoryDropdown = false
-                                        }
+                                        .clickable(
+                                            onClick = {
+                                                historyIndex = actualIdx
+                                                onValueChange(command)
+                                                showHistoryDropdown = false
+                                            },
+                                            onClickLabel = "Select history command",
+                                            role = androidx.compose.ui.semantics.Role.Button
+                                        )
                                         .padding(horizontal = 6.dp, vertical = 4.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
@@ -498,7 +504,11 @@ fun SuggestionChip(
             .clip(RoundedCornerShape(4.dp))
             .background(theme.promptColor.copy(alpha = 0.12f))
             .border(1.dp, theme.promptColor.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
-            .clickable { onClick() }
+            .clickable(
+                onClick = onClick,
+                onClickLabel = "Use suggestion $text",
+                role = androidx.compose.ui.semantics.Role.Button
+            )
             .padding(horizontal = 8.dp, vertical = 4.dp)
             .testTag("suggestion_chip_$text")
     ) {
