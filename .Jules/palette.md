@@ -1,0 +1,3 @@
+## 2024-05-24 - Accessible Interactive Elements in Jetpack Compose
+**Learning:** Found that applying `Modifier.clickable` directly to a small `Icon` lacks a large enough touch target for accessibility requirements and proper screen reader interaction, and that small `Text` components acting as buttons need explicit roles for screen readers.
+**Action:** Always wrap standard interactive `Icon` elements inside an `IconButton` rather than using `.clickable()`, which enforces a 48dp minimum touch target. When adding click behavior to a `Text`, ensure it explicitly includes `role = Role.Button` and `onClickLabel` inside the `Modifier.clickable()` block.
