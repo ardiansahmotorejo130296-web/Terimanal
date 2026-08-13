@@ -1,0 +1,3 @@
+## 2024-05-14 - Accessible Icon Buttons in Jetpack Compose
+**Learning:** In Jetpack Compose, applying `.clickable()` directly to a small `Icon` or `Text` acting as a close/delete button violates accessibility guidelines by missing touch target size requirements (48dp x 48dp) and semantics (role, content description).
+**Action:** Always wrap `Icon` elements in an `IconButton` (which inherently provides a 48dp minimum touch target and semantic click handling) or use standard Compose `Button` components instead of using `.clickable()` on raw text or icons. Avoid shrinking `IconButton`s with small size modifiers that defeat their accessibility purpose. Ensure `contentDescription` is provided.

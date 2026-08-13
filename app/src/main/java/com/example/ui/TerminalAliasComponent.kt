@@ -81,17 +81,17 @@ fun TerminalAliasComponent(
                     )
                 }
 
-                Text(
-                    text = "[X]",
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = currentTheme.errorColor,
-                    modifier = Modifier
-                        .clickable { onClose() }
-                        .padding(horizontal = 4.dp)
-                        .testTag("alias_manager_close_button")
-                )
+                IconButton(
+                    onClick = onClose,
+                    modifier = Modifier.testTag("alias_manager_close_button")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Close Alias Manager",
+                        tint = currentTheme.errorColor,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -275,15 +275,17 @@ fun TerminalAliasComponent(
                                 }
                             }
 
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = "Delete Alias",
-                                tint = currentTheme.errorColor.copy(alpha = 0.8f),
-                                modifier = Modifier
-                                    .size(16.dp)
-                                    .clickable { onDeleteAlias(item.alias) }
-                                    .testTag("delete_alias_${item.alias}")
-                            )
+                            IconButton(
+                                onClick = { onDeleteAlias(item.alias) },
+                                modifier = Modifier.testTag("delete_alias_${item.alias}")
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete Alias",
+                                    tint = currentTheme.errorColor.copy(alpha = 0.8f),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
                         }
                     }
                 }
