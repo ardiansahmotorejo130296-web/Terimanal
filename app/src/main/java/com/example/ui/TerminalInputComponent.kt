@@ -269,14 +269,17 @@ fun TerminalInputComponent(
                             fontSize = 11.sp,
                             color = theme.promptColor
                         )
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = "Close",
-                            tint = theme.foreground.copy(alpha = 0.6f),
+                        IconButton(
+                            onClick = { showHistoryDropdown = false },
                             modifier = Modifier
-                                .size(16.dp)
-                                .clickable { showHistoryDropdown = false }
-                        )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close history dropdown",
+                                tint = theme.foreground.copy(alpha = 0.6f),
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     if (historyStack.isEmpty()) {
