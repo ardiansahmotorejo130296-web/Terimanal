@@ -1,0 +1,3 @@
+## 2026-08-18 - [Accessibility: Minimum Touch Targets for Icons]
+**Learning:** Applying `.clickable()` directly to a standard `Icon` without appropriate padding results in an unacceptably small touch target that violates accessibility guidelines. In this app's component structure, overriding container sizes to artificially restrict small elements (like `.size(36.dp)` on a button) breaks touch accessibility expectations.
+**Action:** When making elements interactive, specifically standard icons, always wrap them in an `IconButton` to guarantee the minimum accessible 48dp touch target, and avoid using restrictive `.size()` modifiers on the outer interactive container unless specifically ensuring > 48dp.
