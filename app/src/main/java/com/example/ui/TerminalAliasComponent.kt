@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -88,7 +89,10 @@ fun TerminalAliasComponent(
                     fontWeight = FontWeight.Bold,
                     color = currentTheme.errorColor,
                     modifier = Modifier
-                        .clickable { onClose() }
+                        .clickable(
+                            role = Role.Button,
+                            onClickLabel = "Close Alias Manager"
+                        ) { onClose() }
                         .padding(horizontal = 4.dp)
                         .testTag("alias_manager_close_button")
                 )
@@ -187,7 +191,6 @@ fun TerminalAliasComponent(
                     modifier = Modifier
                         .clip(RoundedCornerShape(6.dp))
                         .background(currentTheme.promptColor.copy(alpha = 0.15f))
-                        .size(36.dp)
                         .testTag("add_alias_button")
                 ) {
                     Icon(
@@ -275,15 +278,17 @@ fun TerminalAliasComponent(
                                 }
                             }
 
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = "Delete Alias",
-                                tint = currentTheme.errorColor.copy(alpha = 0.8f),
-                                modifier = Modifier
-                                    .size(16.dp)
-                                    .clickable { onDeleteAlias(item.alias) }
-                                    .testTag("delete_alias_${item.alias}")
-                            )
+                            IconButton(
+                                onClick = { onDeleteAlias(item.alias) },
+                                modifier = Modifier.testTag("delete_alias_${item.alias}")
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete Alias",
+                                    tint = currentTheme.errorColor.copy(alpha = 0.8f),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
                         }
                     }
                 }
