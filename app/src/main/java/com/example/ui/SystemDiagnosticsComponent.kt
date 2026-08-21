@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.MonitorHeart
@@ -105,17 +106,16 @@ fun SystemDiagnosticsComponent(
                     
                     Spacer(modifier = Modifier.width(4.dp))
 
-                    Text(
-                        text = "[X]",
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = theme.errorColor,
-                        modifier = Modifier
-                            .clickable { onClose() }
-                            .padding(horizontal = 4.dp)
-                            .testTag("diagnostics_close_button")
-                    )
+                    IconButton(
+                        onClick = onClose,
+                        modifier = Modifier.testTag("diagnostics_close_button")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Close",
+                            tint = theme.errorColor
+                        )
+                    }
                 }
             }
 

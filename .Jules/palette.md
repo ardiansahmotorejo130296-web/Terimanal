@@ -1,0 +1,3 @@
+## 2024-05-19 - Inaccessible close buttons in custom dialogs
+**Learning:** Found custom dialog components (`SystemDiagnosticsComponent`, `TerminalAliasComponent`, `TerminalThemeSwitcherComponent`) using plain `Text("[X]")` with `.clickable {}` for their close buttons. This violates accessibility guidelines by lacking a proper role, content description for screen readers, and adequate touch target size (48dp). Jetpack Compose memory emphasizes wrapping `Icon` in `IconButton` rather than using `.clickable()` on small elements.
+**Action:** Replace text-based `[X]` buttons with proper `IconButton` wrapping an `Icon` (like `Icons.Default.Close`) with a clear `contentDescription = "Close"` to ensure standard touch targets and screen reader support.

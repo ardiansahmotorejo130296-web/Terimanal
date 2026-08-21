@@ -76,17 +76,16 @@ fun TerminalThemeSwitcherComponent(
                     )
                 }
 
-                Text(
-                    text = "[X]",
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = currentTheme.errorColor,
-                    modifier = Modifier
-                        .clickable { onClose() }
-                        .padding(horizontal = 4.dp)
-                        .testTag("theme_switcher_close_button")
-                )
+                IconButton(
+                    onClick = onClose,
+                    modifier = Modifier.testTag("theme_switcher_close_button")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Close",
+                        tint = currentTheme.errorColor
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(8.dp))

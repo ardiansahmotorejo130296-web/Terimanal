@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DeveloperBoard
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
@@ -103,17 +104,16 @@ fun RealtimeSysInfoComponent(
                     
                     Spacer(modifier = Modifier.width(4.dp))
 
-                    Text(
-                        text = "[DISMISS]",
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = theme.errorColor,
-                        modifier = Modifier
-                            .clickable { onClose() }
-                            .padding(horizontal = 4.dp)
-                            .testTag("sysinfo_close_button")
-                    )
+                    IconButton(
+                        onClick = onClose,
+                        modifier = Modifier.testTag("sysinfo_close_button")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Dismiss",
+                            tint = theme.errorColor
+                        )
+                    }
                 }
             }
 
