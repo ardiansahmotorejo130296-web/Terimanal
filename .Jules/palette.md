@@ -1,0 +1,3 @@
+## 2024-05-19 - [Touch Targets in Jetpack Compose UI]
+**Learning:** Terminal utility icons (like the history toggle, arrows) and close buttons were sized directly via `Modifier.size()` at `< 48dp` (e.g. 36dp or 12sp text with no padding) and used raw `.clickable{}`, violating the minimum accessible touch target size of 48dp, making them hard to use for visually or motor impaired users and screen readers.
+**Action:** Wrap custom clickable icons and text in standard `IconButton` components or use `Modifier.defaultMinSize(minWidth = 48.dp, minHeight = 48.dp)` with semantic `Role.Button` to ensure proper accessibility touch areas and labels.
