@@ -1,0 +1,3 @@
+## 2026-08-26 - Compose Touch Targets and Semantics
+**Learning:** In Jetpack Compose, wrapping standard icons in `IconButton` handles the minimum touch target size (48dp) automatically, while a simple `Modifier.clickable()` on a small icon breaks accessibility guidelines. Additionally, for non-standard clickable elements (like Suggestion Chips), explicitly adding `role = Role.Button` and `onClickLabel` is critical for proper screen reader announcements.
+**Action:** Always prefer `IconButton` for standard icons, and manually attach `Role.Button` + `onClickLabel` when creating custom clickable components like chips.
