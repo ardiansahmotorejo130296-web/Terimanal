@@ -275,15 +275,18 @@ fun TerminalAliasComponent(
                                 }
                             }
 
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = "Delete Alias",
-                                tint = currentTheme.errorColor.copy(alpha = 0.8f),
+                            IconButton(
+                                onClick = { onDeleteAlias(item.alias) },
                                 modifier = Modifier
-                                    .size(16.dp)
-                                    .clickable { onDeleteAlias(item.alias) }
                                     .testTag("delete_alias_${item.alias}")
-                            )
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete Alias",
+                                    tint = currentTheme.errorColor.copy(alpha = 0.8f),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
                         }
                     }
                 }
