@@ -1,0 +1,3 @@
+## 2024-05-17 - [Icon Clickability vs IconButton Accessibility]
+**Learning:** Applying `.clickable()` directly to an `Icon` component with a small size (e.g., `.size(16.dp)`) creates an interactive element with a touch target size smaller than the recommended minimum of 48dp for accessibility. It also lacks proper accessibility semantics if `role` and `onClickLabel` are not explicitly defined.
+**Action:** Always wrap standard `Icon` components in an `IconButton` to ensure a minimum touch target size of 48dp and built-in accessibility support. Do not apply `.clickable()` directly to a small `Icon` or override the `IconButton` size to be smaller than the minimum accessible target size.
