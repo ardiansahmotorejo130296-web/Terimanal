@@ -1,0 +1,3 @@
+## 2026-08-29 - [Accessibility] Use IconButton for Touch Targets
+**Learning:** In Jetpack Compose, applying `.clickable()` directly to small icons or text (`Icon`, `Text`) can result in touch targets smaller than the minimum accessible size of 48dp, making the UI harder to use for people with motor impairments or those using touch interfaces. Overriding `IconButton` sizes with modifiers like `.size(24.dp)` also defeats this purpose.
+**Action:** Always wrap standard interactive icons or close buttons in an `IconButton` to ensure a minimum accessible touch target size of 48dp, rather than applying `.clickable()` directly.
