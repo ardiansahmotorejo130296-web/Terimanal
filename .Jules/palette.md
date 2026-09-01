@@ -1,0 +1,3 @@
+## 2024-09-01 - Interactive Element Minimum Size and Semantics
+**Learning:** In Jetpack Compose, directly applying `Modifier.clickable()` to a standard `Icon` (which is typically smaller than 48dp) violates minimum accessible touch target sizes. Additionally, `.clickable()` instances on interactive rows/chips should explicitly define semantic roles (e.g., `role = Role.Button`) and `onClickLabel`s for screen readers.
+**Action:** Always wrap standard `Icon`s in an `IconButton` to ensure a 48dp minimum touch target area, rather than applying `.clickable()` directly to the icon. Ensure that any component made interactive via `.clickable()` includes appropriate semantic properties like `role` and `onClickLabel`.
