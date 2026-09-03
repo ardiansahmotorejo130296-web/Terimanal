@@ -1,0 +1,3 @@
+## 2024-06-25 - [Accessibility: Minimum Touch Targets & Screen Reader Support]
+**Learning:** Using `Icon` with a `clickable` modifier and fixed small sizing (like `size(16.dp)`) often violates the 48dp minimum accessible touch target size in Jetpack Compose, making elements hard to interact with. Custom clickable elements also need explicit roles and semantic descriptions for screen readers.
+**Action:** Always wrap standard `Icon` components in an `IconButton` to automatically inherit the 48dp minimum touch target. For other custom clickable elements, explicitly add `role = Role.Button` and a descriptive `onClickLabel` inside the `clickable` modifier block. Ensure to import `androidx.compose.ui.semantics.Role`.
