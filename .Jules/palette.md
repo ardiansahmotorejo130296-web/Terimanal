@@ -1,0 +1,3 @@
+## 2024-05-24 - Jetpack Compose Accessible Touch Targets and Semantics
+**Learning:** Applying `Modifier.clickable()` directly on small icons fails accessibility minimum touch target size (48dp). Jetpack Compose requires wrapping standard `Icon`s in an `IconButton` to automatically ensure a minimum touch target area, and custom size constraints on `IconButton` should be avoided as they defeat this purpose. Furthermore, explicit `Role.Button` and `onClickLabel` inside `clickable()` blocks are required for full screen reader support.
+**Action:** Always wrap `Icon`s in `IconButton` when they are standalone interactive elements. Include `role = Role.Button` and `onClickLabel` with `Modifier.clickable()`, ensuring to add `import androidx.compose.ui.semantics.Role`.
