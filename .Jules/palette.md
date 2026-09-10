@@ -1,0 +1,3 @@
+## 2024-05-18 - Jetpack Compose Accessibility Modifiers
+**Learning:** Found that custom `clickable` modifiers applied to basic UI components like `Row`, `Box`, and `Icon` without defining `role = Role.Button` and `onClickLabel` are inaccessible to screen readers. Furthermore, interactive icons must meet minimum size requirements (e.g., wrapped in `IconButton` to ensure a 48dp touch target) to be fully accessible.
+**Action:** When creating custom interactive UI elements, ensure `clickable(role = Role.Button, onClickLabel = "...")` is used and ensure `IconButton` is preferred for wrapping standard interactive `Icon`s instead of using bare `Modifier.clickable()`.
