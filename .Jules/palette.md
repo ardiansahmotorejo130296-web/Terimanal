@@ -1,0 +1,3 @@
+## 2026-09-13 - Standardize Interactive Elements and Roles for Accessibility
+**Learning:** Found custom interactive elements using `.clickable()` directly on small structural elements (`Icon`, `Row`, `Box`) lacking minimum touch target sizes (48dp) and explicit screen-reader semantics. This caused accessibility issues for keyboard and screen reader users.
+**Action:** Always wrap standard `Icon`s in an `IconButton` to ensure a 48dp minimum touch target. When adding `Modifier.clickable()` to custom structural elements (like custom rows or chips), explicitly pass `onClickLabel` and `role = Role.Button` (requires `androidx.compose.ui.semantics.Role` import) to provide proper context for assistive technologies.
