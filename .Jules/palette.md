@@ -1,0 +1,3 @@
+## 2026-09-16 - [Proper Touch Targets and Semantic Roles in Jetpack Compose]
+**Learning:** When using `Modifier.clickable` on text or shapes to create custom buttons, screen readers lack context unless explicit `onClickLabel` and `role = Role.Button` are provided. Furthermore, substituting custom small icons (e.g. `.size(16.dp)`) for standard `IconButton` elements breaks the 48dp minimum accessible touch target guidelines.
+**Action:** Always prefer standard interactive elements like `IconButton` when possible. When falling back to `Modifier.clickable`, explicitly set the semantics role and an action label.
