@@ -1,0 +1,3 @@
+## 2024-05-24 - Accessible Touch Targets and Semantics in Jetpack Compose
+**Learning:** When using Jetpack Compose, directly applying `Modifier.clickable()` to small elements like a 16dp `Icon` can lead to inaccessible touch targets (under the recommended 48dp). Furthermore, adding `Modifier.clickable()` to non-standard structural elements like `Row` or `Box` doesn't automatically convey button semantics to screen readers.
+**Action:** Always wrap standard `Icon` elements in an `IconButton` to ensure a minimum 48dp touch target size. When applying `Modifier.clickable()` to structural elements, explicitly set `role = Role.Button` and provide an `onClickLabel` to ensure proper accessibility context is communicated to screen readers.
