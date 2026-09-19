@@ -1,0 +1,3 @@
+## 2024-10-24 - [Accessible Touch Targets & Test Tags]
+**Learning:** When refactoring Jetpack Compose components for accessibility (e.g., wrapping an `Icon` or `Text` with an `IconButton` to provide a minimum 48dp touch target), it is crucial to ensure any existing `testTag` modifiers are migrated from the inner element to the new outer interactive element. Otherwise, UI tests that assert interactions on those test tags will fail because the inner element is no longer the target of the interaction.
+**Action:** Always verify test tag locations and migrate them to the outermost interactive element (like `IconButton`) when wrapping elements for accessible touch targets.
