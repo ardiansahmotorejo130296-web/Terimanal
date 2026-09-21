@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.CommandAlias
+import androidx.compose.ui.semantics.Role
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,7 +89,11 @@ fun TerminalAliasComponent(
                     fontWeight = FontWeight.Bold,
                     color = currentTheme.errorColor,
                     modifier = Modifier
-                        .clickable { onClose() }
+                        .clickable(
+                            onClick = { onClose() },
+                            onClickLabel = "Close Alias Manager",
+                            role = Role.Button
+                        )
                         .padding(horizontal = 4.dp)
                         .testTag("alias_manager_close_button")
                 )
@@ -275,15 +280,17 @@ fun TerminalAliasComponent(
                                 }
                             }
 
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = "Delete Alias",
-                                tint = currentTheme.errorColor.copy(alpha = 0.8f),
-                                modifier = Modifier
-                                    .size(16.dp)
-                                    .clickable { onDeleteAlias(item.alias) }
-                                    .testTag("delete_alias_${item.alias}")
-                            )
+                            IconButton(
+                                onClick = { onDeleteAlias(item.alias) },
+                                modifier = Modifier.testTag("delete_alias_${item.alias}")
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete Alias",
+                                    tint = currentTheme.errorColor.copy(alpha = 0.8f),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
                         }
                     }
                 }

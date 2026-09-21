@@ -1,0 +1,3 @@
+## 2024-05-18 - [Accessible Touch Targets for Icons]
+**Learning:** In Jetpack Compose, applying `Modifier.clickable()` directly to a small `Icon` (e.g., `.size(16.dp)`) results in a touch target that is too small for users, violating the 48dp minimum accessible touch target recommendation. This makes interactions difficult, especially for destructive actions like delete.
+**Action:** Always wrap interactive `Icon` elements in an `IconButton` to ensure a minimum 48dp touch target and proper semantics for screen readers. Move any existing `testTag` and `onClick` handlers from the inner `Icon` to the outer `IconButton`.
