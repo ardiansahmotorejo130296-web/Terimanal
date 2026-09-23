@@ -1,0 +1,3 @@
+## 2024-06-25 - Terminal Input Touch Targets and Semantics
+**Learning:** Standard Modifier.clickable on small Text/Box components in Compose does not implicitly provide semantic role contexts (like Role.Button) for screen readers, and applying them directly to Icons severely violates the 48dp minimum touch target rule, making precise taps difficult.
+**Action:** Always wrap standard Icons in IconButtons instead of applying .clickable(), ensure main interactable submit buttons are at least 48.dp, and explicitly assign Role.Button and onClickLabel to custom clickable rows (like histories and suggestion chips) for full a11y compliance.
