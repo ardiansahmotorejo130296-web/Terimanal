@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -88,7 +89,10 @@ fun TerminalAliasComponent(
                     fontWeight = FontWeight.Bold,
                     color = currentTheme.errorColor,
                     modifier = Modifier
-                        .clickable { onClose() }
+                        .clickable(
+                            onClickLabel = "Close Alias Manager",
+                            role = Role.Button
+                        ) { onClose() }
                         .padding(horizontal = 4.dp)
                         .testTag("alias_manager_close_button")
                 )
@@ -275,15 +279,19 @@ fun TerminalAliasComponent(
                                 }
                             }
 
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = "Delete Alias",
-                                tint = currentTheme.errorColor.copy(alpha = 0.8f),
+                            IconButton(
+                                onClick = { onDeleteAlias(item.alias) },
                                 modifier = Modifier
-                                    .size(16.dp)
-                                    .clickable { onDeleteAlias(item.alias) }
+                                    .size(24.dp) // Maintain small visual footprint, IconButton gives 48dp touch target
                                     .testTag("delete_alias_${item.alias}")
-                            )
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete Alias ${item.alias}",
+                                    tint = currentTheme.errorColor.copy(alpha = 0.8f),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
                         }
                     }
                 }
