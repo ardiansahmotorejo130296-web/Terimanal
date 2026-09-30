@@ -269,14 +269,16 @@ fun TerminalInputComponent(
                             fontSize = 11.sp,
                             color = theme.promptColor
                         )
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = "Close",
-                            tint = theme.foreground.copy(alpha = 0.6f),
-                            modifier = Modifier
-                                .size(16.dp)
-                                .clickable { showHistoryDropdown = false }
-                        )
+                        IconButton(
+                            onClick = { showHistoryDropdown = false },
+                            modifier = Modifier.size(48.dp) // Minimum accessible touch target
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close",
+                                tint = theme.foreground.copy(alpha = 0.6f)
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     if (historyStack.isEmpty()) {
