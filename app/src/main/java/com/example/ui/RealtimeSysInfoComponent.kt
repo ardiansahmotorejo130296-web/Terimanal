@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -110,7 +111,11 @@ fun RealtimeSysInfoComponent(
                         fontWeight = FontWeight.Bold,
                         color = theme.errorColor,
                         modifier = Modifier
-                            .clickable { onClose() }
+                                .clickable(
+                                    role = Role.Button,
+                                    onClickLabel = "Dismiss System Info",
+                                    onClick = { onClose() }
+                                )
                             .padding(horizontal = 4.dp)
                             .testTag("sysinfo_close_button")
                     )
