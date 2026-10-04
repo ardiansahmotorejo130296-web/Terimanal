@@ -1,0 +1,3 @@
+## 2024-05-30 - [Adding Proper Accessibility Roles to Compose Clickable Areas]
+**Learning:** Raw `Modifier.clickable()` in Jetpack Compose elements like `Box` or `Row` default to an uninformative generic element in screen readers. Small `<Icon>` elements wrapped merely with `.clickable()` may fail minimum touch target guidelines and provide poor user experience for individuals with motor difficulties.
+**Action:** Always provide explicit semantics via `onClickLabel` and `role = Role.Button` when applying `.clickable()` to non-button structural elements. Ensure a minimum accessible touch target size of 48dp by wrapping standard `Icon`s in an `IconButton` rather than applying `.clickable()` directly to a small icon (and do not artificially shrink the `IconButton`).
