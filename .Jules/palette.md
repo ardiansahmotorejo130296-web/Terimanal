@@ -1,0 +1,3 @@
+## 2026-10-07 - Refactored Icon Touch Targets to Improve A11y
+**Learning:** Found small touch targets in `TerminalAliasComponent.kt` using `Modifier.clickable()` directly on `Icon` with sizes under 48dp, which fails accessibility standards for touch interaction. Replacing them with `IconButton` natively handles minimum touch size and adds proper interaction feedback.
+**Action:** When adding touch interactions to icons in Compose, avoid `Modifier.clickable()` directly on small `Icon` items or artificially restricting sizes (e.g. `.size(36.dp)` on `IconButton`). Always use `IconButton` which defaults to the accessible 48dp touch target, and transfer any `testTag` to the outer container for tests to continue working.
