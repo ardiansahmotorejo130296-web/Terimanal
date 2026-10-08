@@ -1,0 +1,3 @@
+## 2024-05-18 - [Accessible Touch Targets in TerminalInputComponent]
+**Learning:** Replacing a `.clickable` modifier on a 16dp `Icon` with an `IconButton` correctly increases the touch target to an accessible 48dp without distorting the inner visual size. However, any generated Gradle wrapper files during testing MUST be rigorously un-staged and excluded from the PR, as they pollute UX-focused, micro-changes.
+**Action:** When adding an `IconButton`, explicitly run `git reset HEAD` and `git rm --cached` on local Gradle wrapper files (`gradlew`, `gradlew.bat`, `gradle-wrapper.jar`, `gradle-wrapper.properties`) before committing.
