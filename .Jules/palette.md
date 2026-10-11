@@ -1,0 +1,3 @@
+## 2024-03-24 - Minimum Touch Target and Semantic Elements for Icons
+**Learning:** In Jetpack Compose, applying `.clickable()` directly to a small `Icon` violates the 48dp minimum accessible touch target and provides poor context for screen readers without proper semantics. Using `IconButton` enforces minimum sizing automatically, and explicitly passing `onClickLabel` and `role = Role.Button` to `Modifier.clickable()` on structural containers (like `Row` or `Box`) provides necessary context.
+**Action:** Always wrap standard `Icon`s in an `IconButton` for interactive icons instead of using `.clickable()`. When adding interactivity to non-button elements, ensure `role` and `onClickLabel` are defined.
