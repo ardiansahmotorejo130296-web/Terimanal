@@ -1,0 +1,3 @@
+## 2024-05-17 - [Improved Accessible Roles for Clickable Layouts]
+**Learning:** Adding `Modifier.clickable()` to structural UI elements like `Row` or `Box` without an explicit role or `onClickLabel` leads to poor screen reader context, making the elements functionally opaque to visually impaired users.
+**Action:** Whenever applying `Modifier.clickable()` to non-button structural elements in Jetpack Compose, always explicitly provide an `onClickLabel` and set `role = Role.Button` (ensuring `import androidx.compose.ui.semantics.Role` is included) to ensure meaningful feedback via accessibility services.
