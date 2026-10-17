@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -83,7 +84,10 @@ fun TerminalThemeSwitcherComponent(
                     fontWeight = FontWeight.Bold,
                     color = currentTheme.errorColor,
                     modifier = Modifier
-                        .clickable { onClose() }
+                        .clickable(
+                            onClickLabel = "Close theme switcher",
+                            role = Role.Button
+                        ) { onClose() }
                         .padding(horizontal = 4.dp)
                         .testTag("theme_switcher_close_button")
                 )
@@ -124,7 +128,10 @@ fun TerminalThemeSwitcherComponent(
                                 color = if (isSelected) currentTheme.promptColor else currentTheme.foreground.copy(alpha = 0.2f),
                                 shape = RoundedCornerShape(6.dp)
                             )
-                            .clickable { onThemeSelected(t) }
+                            .clickable(
+                                onClickLabel = "Select theme ${t.name}",
+                                role = Role.Button
+                            ) { onThemeSelected(t) }
                             .padding(8.dp)
                             .testTag("theme_card_${t.id}")
                     ) {
