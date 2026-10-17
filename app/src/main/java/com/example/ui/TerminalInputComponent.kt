@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.TerminalTheme
@@ -275,7 +276,10 @@ fun TerminalInputComponent(
                             tint = theme.foreground.copy(alpha = 0.6f),
                             modifier = Modifier
                                 .size(16.dp)
-                                .clickable { showHistoryDropdown = false }
+                                .clickable(
+                                    onClickLabel = "Close history",
+                                    role = Role.Button
+                                ) { showHistoryDropdown = false }
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
@@ -307,7 +311,10 @@ fun TerminalInputComponent(
                                             if (historyIndex == actualIdx) theme.foreground.copy(alpha = 0.1f) else Color.Transparent,
                                             RoundedCornerShape(4.dp)
                                         )
-                                        .clickable {
+                                        .clickable(
+                                            onClickLabel = "Select command ${command.take(20)}",
+                                            role = Role.Button
+                                        ) {
                                             historyIndex = actualIdx
                                             onValueChange(command)
                                             showHistoryDropdown = false
@@ -498,7 +505,10 @@ fun SuggestionChip(
             .clip(RoundedCornerShape(4.dp))
             .background(theme.promptColor.copy(alpha = 0.12f))
             .border(1.dp, theme.promptColor.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
-            .clickable { onClick() }
+            .clickable(
+                onClickLabel = "Use suggestion $text",
+                role = Role.Button
+            ) { onClick() }
             .padding(horizontal = 8.dp, vertical = 4.dp)
             .testTag("suggestion_chip_$text")
     ) {

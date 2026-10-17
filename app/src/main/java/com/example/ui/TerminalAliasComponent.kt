@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -88,7 +89,10 @@ fun TerminalAliasComponent(
                     fontWeight = FontWeight.Bold,
                     color = currentTheme.errorColor,
                     modifier = Modifier
-                        .clickable { onClose() }
+                        .clickable(
+                            onClickLabel = "Close alias manager",
+                            role = Role.Button
+                        ) { onClose() }
                         .padding(horizontal = 4.dp)
                         .testTag("alias_manager_close_button")
                 )
@@ -281,7 +285,10 @@ fun TerminalAliasComponent(
                                 tint = currentTheme.errorColor.copy(alpha = 0.8f),
                                 modifier = Modifier
                                     .size(16.dp)
-                                    .clickable { onDeleteAlias(item.alias) }
+                                    .clickable(
+                                        onClickLabel = "Delete alias ${item.alias}",
+                                        role = Role.Button
+                                    ) { onDeleteAlias(item.alias) }
                                     .testTag("delete_alias_${item.alias}")
                             )
                         }

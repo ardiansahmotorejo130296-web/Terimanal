@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -112,7 +113,10 @@ fun SystemDiagnosticsComponent(
                         fontWeight = FontWeight.Bold,
                         color = theme.errorColor,
                         modifier = Modifier
-                            .clickable { onClose() }
+                            .clickable(
+                                onClickLabel = "Close diagnostics",
+                                role = Role.Button
+                            ) { onClose() }
                             .padding(horizontal = 4.dp)
                             .testTag("diagnostics_close_button")
                     )
