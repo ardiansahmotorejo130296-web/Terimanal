@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -124,7 +125,11 @@ fun TerminalThemeSwitcherComponent(
                                 color = if (isSelected) currentTheme.promptColor else currentTheme.foreground.copy(alpha = 0.2f),
                                 shape = RoundedCornerShape(6.dp)
                             )
-                            .clickable { onThemeSelected(t) }
+                            .clickable(
+                                role = Role.Button,
+                                onClickLabel = "Select theme ${t.themeName}",
+                                onClick = { onThemeSelected(t) }
+                            )
                             .padding(8.dp)
                             .testTag("theme_card_${t.id}")
                     ) {
