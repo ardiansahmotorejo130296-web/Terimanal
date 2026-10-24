@@ -1,0 +1,3 @@
+## 2026-10-24 - Enhance Accessibility Semantics for Custom Clickable Areas
+**Learning:** In Jetpack Compose, directly applying `.clickable` to icons or non-button structural elements (like Text or Row) creates interactive areas that lack proper context for screen readers. While wrapping small icons in an `IconButton` is standard, it enforces a 48dp minimum size which can break dense UI layouts.
+**Action:** When an `IconButton` cannot be used due to layout constraints, ensure proper accessibility semantics are added to the raw `.clickable` modifier by providing `onClickLabel` and `role = Role.Button` to make these interactions screen-reader friendly.
