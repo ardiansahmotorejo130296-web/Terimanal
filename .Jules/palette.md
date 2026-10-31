@@ -1,0 +1,3 @@
+## 2024-11-01 - [Jetpack Compose Interactive Element A11y]
+**Learning:** When making structural components like `Box`, `Row`, `Text`, or standard `Icon`s clickable in Jetpack Compose using `Modifier.clickable()`, they lack default accessibility semantics. This can cause screen readers to announce them poorly (e.g., just "clickable" without indicating what type of element it is or what the action does).
+**Action:** Always provide explicit semantics via `onClickLabel` and `role = Role.Button` when applying `Modifier.clickable()` to non-button structural elements to ensure proper context for screen readers and visually impaired users. Ensure `import androidx.compose.ui.semantics.Role` is included.
