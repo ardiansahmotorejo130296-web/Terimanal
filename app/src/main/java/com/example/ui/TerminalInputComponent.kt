@@ -23,6 +23,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
@@ -307,7 +308,10 @@ fun TerminalInputComponent(
                                             if (historyIndex == actualIdx) theme.foreground.copy(alpha = 0.1f) else Color.Transparent,
                                             RoundedCornerShape(4.dp)
                                         )
-                                        .clickable {
+                                        .clickable(
+                                            onClickLabel = "Select command from history",
+                                            role = Role.Button
+                                        ) {
                                             historyIndex = actualIdx
                                             onValueChange(command)
                                             showHistoryDropdown = false
@@ -498,7 +502,10 @@ fun SuggestionChip(
             .clip(RoundedCornerShape(4.dp))
             .background(theme.promptColor.copy(alpha = 0.12f))
             .border(1.dp, theme.promptColor.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
-            .clickable { onClick() }
+            .clickable(
+                onClickLabel = "Use suggestion $text",
+                role = Role.Button
+            ) { onClick() }
             .padding(horizontal = 8.dp, vertical = 4.dp)
             .testTag("suggestion_chip_$text")
     ) {
