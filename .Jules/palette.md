@@ -1,0 +1,3 @@
+## 2026-11-10 - Explicit Semantics for Structural Interactive Elements
+**Learning:** When adding `Modifier.clickable` to non-button structural elements like `Box` or `Row` (e.g., Suggestion Chips or History Stack rows), screen readers lack context about the interaction's purpose. Explicitly assigning a semantic role (`Role.Button`) and providing a descriptive action label (`onClickLabel`) are critical for full accessibility compliance and informing users what the click does.
+**Action:** Always include explicit semantics (using `role = Role.Button` and `onClickLabel = "..."`) within the `.clickable()` modifier block whenever turning generic structural containers into interactive touch targets.
