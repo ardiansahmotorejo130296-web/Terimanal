@@ -1,0 +1,3 @@
+## 2024-05-24 - Structural Component Accessibility via `clickable` Modifier
+**Learning:** In Jetpack Compose, non-button structural elements (like `Box`, `Row`, or `Text`) that are made interactive using the `Modifier.clickable()` modifier do not automatically gain accessibility semantics, creating an accessibility regression for screen reader users. The application relies on some of these structural elements for UI features like a suggestions row or history list items.
+**Action:** When adding `Modifier.clickable()` to non-button structural elements, always provide explicit semantics by assigning `role = Role.Button` and providing an `onClickLabel` explaining the action.
